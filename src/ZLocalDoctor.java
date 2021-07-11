@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * @author AHMAD
  */
 public class ZLocalDoctor extends javax.swing.JFrame {
-
+    
     DefaultTableModel model;
 
     /**
@@ -42,9 +42,10 @@ public class ZLocalDoctor extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "SQLException caused: " + ex);
         }
-
+        jButton2.doClick();
+        
     }
-
+    
     public void setTotalDoc() throws SQLException {
         jComboBox1.removeAllItems();
         String url = "jdbc:oracle:thin:@//localhost:1521/ORCLPDB";
@@ -56,13 +57,13 @@ public class ZLocalDoctor extends javax.swing.JFrame {
         }
         conn.close();
     }
-
+    
     public void listPatient() throws SQLException {
         jComboBox1.removeAllItems();
         String url = "jdbc:oracle:thin:@//localhost:1521/ORCLPDB";
         java.sql.Connection conn = DriverManager.getConnection(url, "jnet", "jnet");
         java.sql.Statement state = conn.createStatement();
-        ResultSet rs = state.executeQuery("Select PATIENTNO from patient");
+        ResultSet rs = state.executeQuery("Select PATIENTNO,firstname,lastname from patient");
         while (rs.next()) {
             jComboBox1.addItem(rs.getString(1));
         }
@@ -97,6 +98,9 @@ public class ZLocalDoctor extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jTextField2 = new javax.swing.JTextField();
+        jLabelBooklogo3 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
         jPanel11 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
@@ -204,11 +208,11 @@ public class ZLocalDoctor extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Provider ID", "Name", "Address", "Telephone", "Patient Name"
+                "Provider ID", "Name", "Address", "Telephone"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -257,6 +261,23 @@ public class ZLocalDoctor extends javax.swing.JFrame {
             }
         });
 
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField2KeyPressed(evt);
+            }
+        });
+
+        jLabelBooklogo3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelBooklogo3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelBooklogo3.setText("Search By Name:");
+
+        jButton3.setText("Search");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -264,25 +285,37 @@ public class ZLocalDoctor extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap(37, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 645, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabelBooklogo1)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabelBooklogo1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabelBooklogo2))
+                            .addComponent(jLabelBooklogo3))
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField2)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(jLabelBooklogo2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 645, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(52, Short.MAX_VALUE)
+                .addContainerGap(21, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelBooklogo3)
+                    .addComponent(jButton3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelBooklogo1)
@@ -508,7 +541,7 @@ public class ZLocalDoctor extends javax.swing.JFrame {
                     + " join localdoctor l on l.PROVIDERNO=p.localdoctor\n"
                     + "where patientNo =" + jComboBox1.getSelectedItem());
             while (rs.next()) {
-
+                
                 model.insertRow(model.getRowCount(), new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)});
             }
             conn.close();
@@ -536,7 +569,8 @@ public class ZLocalDoctor extends javax.swing.JFrame {
                     + "  or upper(p.firstname) = upper('" + search + "')\n"
                     + "  or upper(p.lastname) = upper('" + search + "')");
             while (rs.next()) {
-                model.insertRow(model.getRowCount(), new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5) + " " + rs.getString(6)});
+                model.insertRow(model.getRowCount(), new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)});
+                jTextField1.setText( rs.getString(5) + " " + rs.getString(6));
             }
             conn.close();
         } catch (SQLException ex) {
@@ -546,6 +580,8 @@ public class ZLocalDoctor extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         model.setRowCount(0);
+        jTextField1.setText("");
+        jTextField2.setText("");
         try {
             // TODO add your handling code here:
             jTable1();
@@ -563,14 +599,42 @@ public class ZLocalDoctor extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextField1KeyPressed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        String search = "";
+        jTextField1.setText("");
+        search = jTextField2.getText();
+        try {
+            model.setRowCount(0);
+            String url = "jdbc:oracle:thin:@//localhost:1521/ORCLPDB";
+            java.sql.Connection conn = DriverManager.getConnection(url, "jnet", "jnet");
+            java.sql.Statement state = conn.createStatement();
+            ResultSet rs = state.executeQuery("select * from localdoctor where upper(FULLNAME)=upper('" + search + "')");
+            while (rs.next()) {
+                model.insertRow(model.getRowCount(), new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)});
+            }
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ZLocalDoctor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            jButton2.doClick();
+        }
+    }//GEN-LAST:event_jTextField2KeyPressed
+    
     public void enterColor(JPanel panel) {
         panel.setBackground(new java.awt.Color(255, 255, 255));
     }
-
+    
     public void exitColor(JPanel panel) {
         panel.setBackground(new java.awt.Color(204, 204, 204));
     }
-
+    
     public void quitColor(JPanel panel) {
         panel.setBackground(new java.awt.Color(253, 150, 150));
     }
@@ -613,14 +677,14 @@ public class ZLocalDoctor extends javax.swing.JFrame {
             }
         });
     }
-
+    
     private void jTable1() throws IOException, SQLException {
         String url = "jdbc:oracle:thin:@//localhost:1521/ORCLPDB";
         java.sql.Connection conn = DriverManager.getConnection(url, "jnet", "jnet");
         java.sql.Statement state = conn.createStatement();
         ResultSet rs = state.executeQuery("Select * from localdoctor");
         while (rs.next()) {
-
+            
             model.insertRow(model.getRowCount(), new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)});
         }
         conn.close();
@@ -629,6 +693,7 @@ public class ZLocalDoctor extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -639,6 +704,7 @@ public class ZLocalDoctor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelBooklogo;
     private javax.swing.JLabel jLabelBooklogo1;
     private javax.swing.JLabel jLabelBooklogo2;
+    private javax.swing.JLabel jLabelBooklogo3;
     private javax.swing.JLabel jLabelSetTotal;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -653,5 +719,6 @@ public class ZLocalDoctor extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }

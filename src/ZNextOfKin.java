@@ -144,7 +144,7 @@ public class ZNextOfKin extends javax.swing.JFrame {
 
         jLabelBooklogo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabelBooklogo.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelBooklogo.setText("Total LocalDoctors:");
+        jLabelBooklogo.setText("Total Kin:");
 
         jLabelSetTotal.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabelSetTotal.setForeground(new java.awt.Color(255, 255, 255));
@@ -156,11 +156,11 @@ public class ZNextOfKin extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(72, 72, 72)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(222, 222, 222)
+                .addGap(285, 285, 285)
                 .addComponent(jLabelBooklogo)
                 .addGap(18, 18, 18)
                 .addComponent(jLabelSetTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(364, 364, 364))
+                .addGap(301, 301, 301))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,11 +205,11 @@ public class ZNextOfKin extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Full Name", "Relationship", "Address", "Telephone"
+                "Kin ID", "Full Name", "Relationship", "Address", "Telephone"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -510,7 +510,7 @@ public class ZNextOfKin extends javax.swing.JFrame {
                     + "where k.patientNo=" + jComboBox1.getSelectedItem());
             while (rs.next()) {
 
-                model.insertRow(model.getRowCount(), new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)});
+                model.insertRow(model.getRowCount(), new Object[]{rs.getString(1), rs.getString(2), rs.getString(3),rs.getString(4), rs.getString(5)});
             }
             conn.close();
         } catch (SQLException ex) {
@@ -524,24 +524,23 @@ public class ZNextOfKin extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        System.out.println("pressed");
         String search = "";
         search = jTextField1.getText();
-        System.out.println(search);
         try {
             model.setRowCount(0);
             String url = "jdbc:oracle:thin:@//localhost:1521/ORCLPDB";
             java.sql.Connection conn = DriverManager.getConnection(url, "jnet", "jnet");
             java.sql.Statement state = conn.createStatement();
-            ResultSet rs = state.executeQuery(" select l.PROVIDERNO, l.FULLNAME , l.ADDRESS, l.TELEPHONE, p.firstname,p.lastname\n"
-                    + "  from patient p\n"
-                    + "  join localdoctor l on p.localdoctor=l.providerno\n"
+            ResultSet rs = state.executeQuery("select k.kinID, k.fullname, k.relationship, k.address, k.telephone\n"
+                    + "from nextofkin k\n"
+                    + "join patient p on k.patientNo=p.patientNo"
                     + "  where upper(CONCAT(CONCAT(p.firstname,' '),p.lastname))=upper('" + search + "')\n"
                     + "  or upper(p.firstname) = upper('" + search + "')\n"
-                    + "  or upper(p.lastname) = upper('" + search + "')");
+                    + "  or upper(p.lastname) = upper('" + search + "')"
+            );
             while (rs.next()) {
 
-                model.insertRow(model.getRowCount(), new Object[]{rs.getString(2), rs.getString(3), rs.getString(4)});
+                model.insertRow(model.getRowCount(), new Object[]{rs.getString(1),rs.getString(2), rs.getString(3), rs.getString(4),rs.getString(5)});
             }
             conn.close();
         } catch (SQLException ex) {
@@ -550,6 +549,7 @@ public class ZNextOfKin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        model.setRowCount(0);
         try {
             // TODO add your handling code here:
             jTable1();
@@ -625,7 +625,7 @@ public class ZNextOfKin extends javax.swing.JFrame {
         ResultSet rs = state.executeQuery("Select * from NEXTOFKIN");
         while (rs.next()) {
 
-            model.insertRow(model.getRowCount(), new Object[]{rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)});
+            model.insertRow(model.getRowCount(), new Object[]{rs.getString(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)});
         }
         conn.close();
     }
